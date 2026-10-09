@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para María Jesús 💜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,400&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noche: #2a1245;
+    --ciruela: #5b2a86;
+    --lila: #c9a7f0;
+    --petalo: #f4b6e0;
+    --crema: #fff4fb;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% 20%, var(--ciruela), var(--noche) 70%);
+    color: var(--crema);
+    font-family: 'Nunito', system-ui, sans-serif;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    text-align: center;
+  }
+  main { padding: 24px; max-width: 520px; position: relative; z-index: 2; }
+
+  /* Pantalla inicial */
+  #inicio h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2.4rem, 11vw, 4rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  #inicio p { color: var(--lila); margin-bottom: 32px; font-size: 1.1rem; }
+
+  .flor {
+    width: 120px; height: 120px; margin: 0 auto 28px; position: relative;
+    animation: latido 2.4s ease-in-out infinite;
+  }
+  .flor i {
+    position: absolute; left: 50%; top: 50%;
+    width: 40px; height: 62px; margin: -62px 0 0 -20px;
+    background: linear-gradient(var(--petalo), var(--lila));
+    border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+    transform-origin: 50% 100%;
+    transform: rotate(calc(var(--i) * 60deg));
+  }
+  .flor b {
+    position: absolute; inset: 42px; border-radius: 50%; background: #ffd86b;
+  }
+  @keyframes latido { 50% { transform: scale(1.08); } }
+
+  button {
+    font: inherit; font-weight: 600; font-size: 1.1rem;
+    background: var(--petalo); color: var(--noche);
+    border: 0; border-radius: 999px; padding: 14px 32px; cursor: pointer;
+    transition: transform .2s, background .2s;
+  }
+  button:hover { transform: scale(1.05); background: #fff; }
+  button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+  /* Mensaje oculto */
+  #mensaje { display: none; }
+  #mensaje.visible { display: block; animation: aparece 1.2s ease both; }
+  #mensaje h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    color: var(--petalo); margin-bottom: 20px;
+  }
+  #mensaje p { font-size: 1.15rem; line-height: 1.7; margin-bottom: 16px; }
+  #mensaje .firma {
+    font-family: 'Fraunces', Georgia, serif; font-size: 1.8rem; color: var(--lila); margin-top: 24px;
+  }
+  @keyframes aparece { from { opacity: 0; transform: translateY(20px); } }
+
+  /* Pétalos que caen */
+  .petalo {
+    position: fixed; top: -40px; z-index: 1; pointer-events: none;
+    animation: cae linear forwards;
+  }
+  @keyframes cae {
+    to { transform: translate(var(--dx), 110vh) rotate(var(--giro)); opacity: .7; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flor { animation: none; }
+    .petalo { display: none; }
+    #mensaje.visible { animation: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section id="inicio">
+    <div class="flor" aria-hidden="true">
+      <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+      <i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i>
+      <b></b>
+    </div>
+    <h1>María Jesús,<br>tengo algo para ti</h1>
+    <p>Hoy es 8 de marzo</p>
+    <button id="abrir">Abrir mi sorpresa</button>
+  </section>
+
+  <section id="mensaje" aria-live="polite">
+    <h2>Feliz Día de la Mujer, María Jesús 💜</h2>
+    <p>Eres una mujer trabajadora, fuerte, inteligente y valiente, que no se rinde ante nada y que lucha por lo que quiere.</p>
+    <p>Eres una gran mujer.</p>
+    <p class="firma">Te quiero</p>
+  </section>
+</main>
+
+<script>
+  const emojis = ['💜', '🌸', '🌷', '💐', '🪻', '✨'];
+  let lluvia;
+
+  function petalo() {
+    const el = document.createElement('span');
+    el.className = 'petalo';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = 16 + Math.random() * 22 + 'px';
+    el.style.animationDuration = 4 + Math.random() * 4 + 's';
+    el.style.setProperty('--dx', (Math.random() * 120 - 60) + 'px');
+    el.style.setProperty('--giro', (Math.random() * 720 - 360) + 'deg');
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  document.getElementById('abrir').addEventListener('click', () => {
+    document.getElementById('inicio').style.display = 'none';
+    document.getElementById('mensaje').classList.add('visible');
+    for (let i = 0; i < 30; i++) setTimeout(petalo, i * 60);
+    lluvia = setInterval(petalo, 350);
+  });
+</script>
+</body>
+</html>
